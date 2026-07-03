@@ -1,0 +1,19 @@
+Device 2ce3:3828  bus=0 addr=1 speed=3
+  bcdUSB=0200 class=0xef sub=0x02 proto=0x01 ep0=64
+  bcdDevice=0111 numConfigs=1
+  iManufacturer: Geek szitman
+  iProduct:      useepluscam
+  iSerial:       202402062300000
+
+Configuration 1: numInterfaces=2 attrs=0x80 maxPower=100mA totalLen=64
+  Interface 0 alt 0: class=255/240/0 numEP=2 iInterface=4 (iAP Interface)
+    EP 0x81 IN  bulk maxPacket=512 interval=0
+    EP 0x01 OUT bulk maxPacket=512 interval=0
+  Interface 1 alt 0: class=255/240/1 numEP=0 iInterface=5 (com.useeplus.protocol)
+  Interface 1 alt 1: class=255/240/1 numEP=2 iInterface=5 (com.useeplus.protocol)
+    EP 0x82 IN  bulk maxPacket=512 interval=0
+    EP 0x02 OUT bulk maxPacket=512 interval=0
+
+Raw config descriptor:
+  09 02 40 00 02 01 00 80 32 09 04 00 00 02 ff f0 00 04 07 05 81 02 00 02 00 07 05 01 02 00 02 00 
+  09 04 01 00 00 ff f0 01 05 09 04 01 01 02 ff f0 01 05 07 05 82 02 00 02 00 07 05 02 02 00 02 00
