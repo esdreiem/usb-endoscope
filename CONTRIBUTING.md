@@ -9,7 +9,7 @@ contributions too small. If something in this guide is unclear, that's a bug in
 the guide, and pointing it out already helps.
 
 The whole point of this app is to be a **trustworthy, auditable, fully local,
-offline-capable** alternative to the sketchy vendor apps that cheap USB
+offline-capable** alternative to the proprietary companion apps that cheap USB
 endoscopes ship with. It exists solely to stream the i4season / "Usee Plus"
 endoscope (USB VID `0x2ce3` / PID `0x3828`) directly in the browser over WebUSB.
 Please keep that spirit in mind — the golden rules below exist to protect it.

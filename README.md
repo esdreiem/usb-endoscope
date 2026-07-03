@@ -1,6 +1,6 @@
 # USB-Endoscope
 
-**An installable, fully local web app that streams the i4season / "Usee Plus" USB endoscope directly in your browser over WebUSB — a trustworthy, open alternative to the sketchy vendor app this endoscope ships with.**
+**An installable, fully local web app that streams the i4season / "Usee Plus" USB endoscope directly in your browser over WebUSB — an open, privacy-friendly alternative to the device's proprietary companion app.**
 
 🇬🇧 English | [🇩🇪 Deutsch](README.de.md)
 
@@ -14,7 +14,7 @@
 
 ## What it is
 
-Cheap USB endoscopes almost always ship with a proprietary phone app of dubious provenance — closed source, ad-laden, and asking for permissions a camera viewer has no business wanting. This project is the opposite: **an installable web app, no build step, no dependencies, and zero network requests.** The camera image never leaves your device.
+Cheap USB endoscopes usually rely on a proprietary companion app to work. This project is a fully local alternative to it: **an installable web app, no build step, no dependencies, and zero network requests.** The camera image never leaves your device.
 
 It does exactly one thing: connect the **i4season / "Usee Plus"** USB endoscope (USB `VID 0x2ce3` / `PID 0x3828`, marketed as "Geek szitman useepluscam") over **WebUSB** and show its live video — no native app, no vendor software.
 
@@ -119,6 +119,12 @@ Prior art that served as valuable early signposts. Note honestly: these describe
 - [hbens/geek-szitman-supercamera](https://github.com/hbens/geek-szitman-supercamera)
 - [MAkcanca/useeplus-linux-driver](https://github.com/MAkcanca/useeplus-linux-driver)
 - [linux-media V4L2 driver patch](https://marc.info/?l=linux-media&m=175756642100535)
+
+## Disclaimer
+
+This is an independent, unofficial project — **not affiliated with, endorsed by, or connected to** i4season, "Usee Plus", "Geek szitman", or any endoscope manufacturer. Product and company names are trademarks of their respective owners and are used only to identify the compatible hardware (nominative fair use).
+
+The WebUSB protocol here was reverse-engineered for **interoperability** — to use an endoscope you own with software you control. No proprietary vendor code is included. The software is provided "as is", without warranty of any kind, under GPL-3.0-or-later; you use it at your own risk.
 
 ## License
 

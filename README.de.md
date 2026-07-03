@@ -1,6 +1,6 @@
 # USB-Endoskop
 
-**Eine installierbare, vollständig lokale Web-App, die das i4season / "Usee Plus" USB-Endoskop direkt in deinem Browser über WebUSB streamt — eine vertrauenswürdige, quelloffene Alternative zur zwielichtigen Hersteller-App, die diesem Endoskop beiliegt.**
+**Eine installierbare, vollständig lokale Web-App, die das i4season / "Usee Plus" USB-Endoskop direkt in deinem Browser über WebUSB streamt — eine offene, datenschutzfreundliche Alternative zur proprietären Begleit-App des Geräts.**
 
 [🇬🇧 English](README.md) | 🇩🇪 Deutsch
 
@@ -14,7 +14,7 @@
 
 ## Was es ist
 
-Billige USB-Endoskope kommen fast immer mit einer proprietären Handy-App zweifelhafter Herkunft — Closed Source, voller Werbung und mit Berechtigungsforderungen, die ein Kamera-Viewer überhaupt nicht braucht. Dieses Projekt ist das Gegenteil: **eine installierbare Web-App, ohne Build-Schritt, ohne Abhängigkeiten und mit null Netzwerkanfragen.** Das Kamerabild verlässt dein Gerät nie.
+Billige USB-Endoskope brauchen normalerweise eine proprietäre Begleit-App. Dieses Projekt ist eine vollständig lokale Alternative dazu: **eine installierbare Web-App, ohne Build-Schritt, ohne Abhängigkeiten und mit null Netzwerkanfragen.** Das Kamerabild verlässt dein Gerät nie.
 
 Sie tut genau eine Sache: das **i4season / "Usee Plus"** USB-Endoskop (USB `VID 0x2ce3` / `PID 0x3828`, vermarktet als "Geek szitman useepluscam") über **WebUSB** verbinden und sein Live-Video anzeigen — keine native App, keine Hersteller-Software.
 
@@ -119,6 +119,12 @@ Vorarbeiten, die als wertvolle frühe Wegweiser dienten. Ehrlicher Hinweis: Dies
 - [hbens/geek-szitman-supercamera](https://github.com/hbens/geek-szitman-supercamera)
 - [MAkcanca/useeplus-linux-driver](https://github.com/MAkcanca/useeplus-linux-driver)
 - [linux-media V4L2 driver patch](https://marc.info/?l=linux-media&m=175756642100535)
+
+## Haftungsausschluss
+
+Dies ist ein unabhängiges, inoffizielles Projekt — es **steht in keiner Verbindung zu** i4season, „Usee Plus", „Geek szitman" oder einem Endoskop-Hersteller und wird von diesen weder unterstützt noch gebilligt. Produkt- und Firmennamen sind Marken der jeweiligen Eigentümer und werden nur zur Bezeichnung der kompatiblen Hardware verwendet.
+
+Das WebUSB-Protokoll wurde zur **Interoperabilität** reverse-engineert — um ein Endoskop, das dir gehört, mit Software zu nutzen, die du kontrollierst. Es ist kein proprietärer Herstellercode enthalten. Die Software wird „wie besehen" ohne jegliche Gewährleistung unter GPL-3.0-or-later bereitgestellt; die Nutzung erfolgt auf eigenes Risiko.
 
 ## Lizenz
 
