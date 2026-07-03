@@ -1,0 +1,20 @@
+[   0.00] warte auf ABSTECKEN ...
+[ 222.83] abgesteckt. warte auf ANSTECKEN ...
+[ 232.59] angesteckt! claim If0 ONLY
+[ 232.74] << beat 1: ff 55 02 00 ee 10
+[ 234.75] << beat 2: ff 55 02 00 ee 10
+[ 234.75] >> DETECT-ECHO -> 0x01: ff 55 02 00 ee 10 ok
+[ 234.76] << beat 3: ff 5a 00 17 80 00 00 00 10 01 01 10 00 0b b8 05 dc 01 00 0a 00 01 3e
+[ 236.77] << beat 4: ff 5a 00 17 80 00 00 00 10 01 01 10 00 0b b8 05 dc 01 00 0a 00 01 3e
+[ 238.78] << beat 5: ff 5a 00 17 80 00 00 00 10 01 01 10 00 0b b8 05 dc 01 00 0a 00 01 3e
+[ 240.79] << beat 6: ff 5a 00 17 80 00 00 00 10 01 01 10 00 0b b8 05 dc 01 00 0a 00 01 3e
+[ 240.79] >> MAGIC (einmalig, #1-Replikation) -> 0x01: ff 55 ff 55 ee 10 ok
+[ 242.80] << beat 7: ff 5a 00 17 80 00 00 00 10 01 01 10 00 0b b8 05 dc 01 00 0a 00 01 3e
+[ 244.81] << beat 8: ff 5a 00 17 80 00 00 00 10 01 01 10 00 0b b8 05 dc 01 00 0a 00 01 3e
+[ 244.81] Phase C: 10 s NICHT lesen (Gap wie in #1)
+[ 254.83] If1 -> Alt1
+[ 254.83] << EP0x81: 23B: ff 5a 00 17 80 00 00 00 10 01 01 10 00 0b b8 05 dc 01 00 0a 00 01 3e
+[ 255.14] >> CONNECT -> 0x02: bb aa 05 00 00 ok
+[ 260.15] >> cid07 -> 0x02: bb aa 07 00 00 ok
+[ 263.66] >> HELLO6 -> 0x02: bb aa 05 00 00 0e ok
+[ 277.68] ENDE: 0 Frames, 1 RX-Events, 23 B

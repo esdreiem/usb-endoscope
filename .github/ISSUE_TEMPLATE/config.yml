@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💬 Questions & Discussions
+    url: https://github.com/esdreiem/usb-endoscope/discussions
+    about: For questions, ideas, and general help. If Discussions isn't enabled yet, open a blank issue instead.
+  - name: 📖 Read the README first
+    url: https://github.com/esdreiem/usb-endoscope#readme
+    about: Setup, supported browsers/platforms, and how the two modes (UVC vs WebUSB vendor) work.

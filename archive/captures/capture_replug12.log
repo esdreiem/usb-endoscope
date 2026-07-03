@@ -1,0 +1,47 @@
+[   0.00] warte auf ABSTECKEN ...
+[  28.94] abgesteckt. warte auf ANSTECKEN ...
+[  36.80] angesteckt! claim If0
+[  36.86] >> DETECT-ECHO: ff 55 02 00 ee 10
+[  36.87] >> SYN/ACK: ff 5a 00 17 c0 0b 00 00 c5 01 01 10 00 0b b8 05 dc 01 00 0a 00 01 3e
+[  36.87] *** LINK UP ***
+[  36.91] >> RequestAuthenticationCertificate: ff 5a 00 10 40 0c 00 0a 41 40 40 00 06 aa 00 d0
+[  37.14] << CTRL AuthCert (sess 0x0a, 619B, 609B params)
+[  37.14]      p0: 609B 30 82 02 5b 06 09 2a 86 48 86 f7 0d 01 07 02 a0 82 02 4c 30 82 02 48 02 ...
+[  37.18] >> AuthenticationSucceeded: ff 5a 00 10 40 0d 01 0a 3f 40 40 00 06 aa 05 cb
+[  38.18] >> StartIdentification: ff 5a 00 10 40 0e 01 0a 3e 40 40 00 06 1d 00 5d
+[  38.19] << CTRL IdentInfo (sess 0x0a, 200B, 134B params)
+[  38.19]      p0: 43 61 6d 65 72 61 00  = "Camera"
+[  38.19]      p1: 4c 54 2d 30 31 00  = "LT-01"
+[  38.19]      p2: 44 65 76 69 63 65 00  = "Device"
+[  38.19]      p3: 30 32 32 30 31 38 30 35 30 31 30 30 30 33 30 00  = "022018050100030"
+[  38.19]      p4: 31 2e 30 00  = "1.0"
+[  38.19]      p5: 50 56 2d 31 00  = "PV-1"
+[  38.19]      p6: ea 02 ae 00 ae 02
+[  38.19]      p7: ae 01
+[  38.19]      p8: 00
+[  38.19]      p9: 00 64
+[  38.19]      p10: 42B 00 05 00 00 01 00 1a 00 01 63 6f 6d 2e 75 73 65 65 70 6c 75 73 2e 70 72 ...
+[  38.19]      p11: 4e 51 5a 4d 41 36 42 51 44 32 00  = "NQZMA6BQD2"
+[  38.19]      p12: 65 6e 00  = "en"
+[  38.19]      p13: 65 6e 00  = "en"
+[  38.19]      p16: 00 06 00 00 00 00 00 09 00 01 69 41 50 32 00 00 04 00 02
+[  38.23] >> IdentificationAccepted: ff 5a 00 10 40 0f 02 0a 3c 40 40 00 06 1d 02 5b
+[  38.24] << CTRL EA02 (sess 0x0a, 32B, 22B params)
+[  38.24]      p0: 63 6f 6d 2e 75 73 65 65 70 6c 75 73 2e 69 73 74 6f 72 61 67 65 00  = "com.useeplus.istorage"
+[  38.84] Handshake fertig, msgs=['0x1d01', '0xaa01', '0xea02']
+[  38.84] --- Kandidat: 0xAE01 p0=01 (protocol id, PRIMARY) ---
+[  38.84] >> 0xAE01 p0=01 (protocol id, PRIMARY): ff 5a 00 15 40 10 03 0a 35 40 40 00 0b ae 01 00 05 00 00 01 c0
+[  44.86] --- Kandidat: 0xAE01 (no params) ---
+[  44.86] >> 0xAE01 (no params): ff 5a 00 10 40 11 03 0a 39 40 40 00 06 ae 01 cb
+[  50.90] --- Kandidat: 0xAE01 p0=05 00 00 (legacy start body) ---
+[  50.91] >> 0xAE01 p0=05 00 00 (legacy start body): ff 5a 00 17 40 12 03 0a 31 40 40 00 0d ae 01 00 07 00 00 05 00 00 b8
+[  56.95] --- Kandidat: 0xAE01 p0=1000 (session handle) ---
+[  56.96] >> 0xAE01 p0=1000 (session handle): ff 5a 00 16 40 13 03 0a 31 40 40 00 0c ae 01 00 06 00 00 10 00 af
+[  62.99] --- Kandidat: 0xAE01 p0=07 (camera id 7) ---
+[  62.99] >> 0xAE01 p0=07 (camera id 7): ff 5a 00 15 40 14 03 0a 31 40 40 00 0b ae 01 00 05 00 00 07 ba
+[  69.04] --- Kandidat: 0xAE01 p0=0B (camera id 11) ---
+[  69.04] >> 0xAE01 p0=0B (camera id 11): ff 5a 00 15 40 15 03 0a 30 40 40 00 0b ae 01 00 05 00 00 0b b6
+[  75.06] --- Kandidat: 0xAE01 p0=istorage (echo device 0xEA02) ---
+[  75.06] >> 0xAE01 p0=istorage (echo device 0xEA02): ff 5a 00 2a 40 16 03 0a 1a 40 40 00 20 ae 01 00 1a 00 00 63 6f 6d 2e 75 73 65 65 70 6c 75 73 2e ...
+[  89.23] === Last Resort: If1->Alt1, EP 0x82 8 s prüfen ===
+[  97.74] ENDE: 0 Frames; AE00/AE02-Msgs gedumpt: 0 (-> tools/replug12_ae_dump.bin); Bulk-RX 0 (0B); link msgs=['0x1d01', '0xaa01', '0xea02']; gone=False

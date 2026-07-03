@@ -1,0 +1,33 @@
+[   0.00] warte auf ABSTECKEN ...
+[  41.40] abgesteckt. warte auf ANSTECKEN ...
+[  45.41] angesteckt! claim If0
+[  45.58] >> DETECT-ECHO: ff 55 02 00 ee 10
+[  45.59] >> SYN/ACK: ff 5a 00 17 c0 0b 00 00 c5 01 01 10 00 0b b8 05 dc 01 00 0a 00 01 3e
+[  45.59] *** LINK UP ***
+[  45.64] >> 0xaa00: ff 5a 00 10 40 0c 00 0a 41 40 40 00 06 aa 00 d0
+[  45.87] << CTRL AuthCertificate (sess 0x0a, 619B)
+[  45.91] >> 0xaa05: ff 5a 00 10 40 0d 01 0a 3f 40 40 00 06 aa 05 cb
+[  47.11] >> 0x1d00: ff 5a 00 10 40 0e 01 0a 3e 40 40 00 06 1d 00 5d
+[  47.12] << CTRL IdentInfo (sess 0x0a, 200B)
+[  47.17] >> IdentificationAccepted: ff 5a 00 10 40 0f 02 0a 3c 40 40 00 06 1d 02 5b
+[  47.17] << CTRL 0xea02 (sess 0x0a, 32B)
+[  47.47] >> StartEAProtocolSession: ff 5a 00 1b 40 10 03 0a 2f 40 40 00 11 ea 00 00 05 00 00 01 00 06 00 01 10 00 68
+[  48.97] Handshake fertig (msgs=['0x1d01', '0xaa01', '0xea02']), Link bleibt oben
+[  48.98] If1 -> Alt1 (Link weiter aktiv)
+[  49.28] >> CONNECT #1: bb aa 05 00 00
+[  52.21] >> None: FEHLER [Errno 60] Operation timed out
+[  52.29] >> CONNECT #2: bb aa 05 00 00
+[  54.41] >> None: FEHLER [Errno 60] Operation timed out
+[  55.29] >> CONNECT #3: bb aa 05 00 00
+[  56.54] >> None: FEHLER [Errno 60] Operation timed out
+[  58.70] >> None: FEHLER [Errno 60] Operation timed out
+[  58.70] >> CONNECT #4: bb aa 05 00 00
+[  60.89] >> None: FEHLER [Errno 60] Operation timed out
+[  61.71] >> CONNECT #5: bb aa 05 00 00
+[  63.09] >> None: FEHLER [Errno 60] Operation timed out
+[  65.27] >> None: FEHLER [Errno 60] Operation timed out
+[  67.50] >> None: FEHLER [Errno 60] Operation timed out
+[  69.66] >> None: FEHLER [Errno 60] Operation timed out
+[  71.88] >> None: FEHLER [Errno 60] Operation timed out
+[  73.22] ENDE: 0 Frames, 0 Bulk-RX, 0 B; Link msgs=['0x1d01', '0xaa01', '0xea02']
+[  73.22] >> None: FEHLER [Errno 19] No such device (it may have been disconnected)

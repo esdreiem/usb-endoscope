@@ -1,0 +1,49 @@
+[   0.02] Gerät gefunden, claim If0
+[   0.02] >> DETECT-ECHO: ff 55 02 00 ee 10
+[   0.04] >> SYN/ACK: ff 5a 00 17 c0 0b 00 00 c5 01 01 10 00 0b b8 05 dc 01 00 0a 00 01 3e
+[   0.04] *** LINK UP ***
+[   0.08] >> RequestAuthenticationCertificate: ff 5a 00 10 40 0c 00 0a 41 40 40 00 06 aa 00 d0
+[   0.08] << ACK (ack=0x0c)
+[   0.31] << CTRL AuthCert (sess 0x0a, 619B, 1 params)
+[   0.31]      p0: 609B 30 82 02 5b 06 09 2a 86 48 86 f7 0d 01 07 02 a0 82 02 4c 30 82 02 48 02 01 01 31 00 ...
+[   0.35] >> AuthenticationSucceeded: ff 5a 00 10 40 0d 01 0a 3f 40 40 00 06 aa 05 cb
+[   0.35] << ACK (ack=0x0d)
+[   1.15] >> StartIdentification: ff 5a 00 10 40 0e 01 0a 3e 40 40 00 06 1d 00 5d
+[   1.15] << ACK (ack=0x0e)
+[   1.16] << CTRL IdentInfo (sess 0x0a, 200B, 15 params)
+[   1.16]      p0: 43 61 6d 65 72 61 00  = "Camera"
+[   1.16]      p1: 4c 54 2d 30 31 00  = "LT-01"
+[   1.16]      p2: 44 65 76 69 63 65 00  = "Device"
+[   1.16]      p3: 30 32 32 30 31 38 30 35 30 31 30 30 30 33 30 00  = "022018050100030"
+[   1.16]      p4: 31 2e 30 00  = "1.0"
+[   1.16]      p5: 50 56 2d 31 00  = "PV-1"
+[   1.16]      p6: ea 02 ae 00 ae 02
+[   1.16]      p7: ae 01
+[   1.16]      p8: 00
+[   1.16]      p9: 00 64
+[   1.16]      p10: 42B 00 05 00 00 01 00 1a 00 01 63 6f 6d 2e 75 73 65 65 70 6c 75 73 2e 70 72 6f 74 6f 63 ...
+[   1.16]      p11: 4e 51 5a 4d 41 36 42 51 44 32 00  = "NQZMA6BQD2"
+[   1.16]      p12: 65 6e 00  = "en"
+[   1.16]      p13: 65 6e 00  = "en"
+[   1.16]      p16: 00 06 00 00 00 00 00 09 00 01 69 41 50 32 00 00 04 00 02
+[   1.20] >> IdentificationAccepted: ff 5a 00 10 40 0f 02 0a 3c 40 40 00 06 1d 02 5b
+[   1.20] << ACK (ack=0x0f)
+[   1.21] << CTRL EA02(req) (sess 0x0a, 32B, 1 params)
+[   1.21]      p0: 63 6f 6d 2e 75 73 65 65 70 6c 75 73 2e 69 73 74 6f 72 61 67 65 00  = "com.useeplus.istorage"
+[   1.30] Handshake fertig, msgs=['0x1d01', '0xaa01', '0xea02'], EA02-Namen=['com.useeplus.istorage']
+[   1.30] --- GRANT name=com.useeplus.istorage sid=0x0001 ---
+[   1.31] >> 0xAE01 GRANT name=com.useeplus.istorage sid=0x0001: ff 5a 00 30 40 10 03 0a 1a 40 40 00 26 ae 01 00 1a 00 00 63 6f 6d 2e 75 73 65 65 70 6c 75 73 2e 69 73 74 6f 72 61 67 65 ...
+[   1.31] << ACK (ack=0x10)
+[   7.33] --- GRANT name=com.useeplus.protocol sid=0x0002 (video) ---
+[   7.33] >> 0xAE01 GRANT name=com.useeplus.protocol sid=0x0002 (video): ff 5a 00 30 40 11 03 0a 19 40 40 00 26 ae 01 00 1a 00 00 63 6f 6d 2e 75 73 65 65 70 6c 75 73 2e 70 72 6f 74 6f 63 6f 6c ...
+[   7.33] << ACK (ack=0x11)
+[  13.35] --- GRANT protoid=01 sid=0x0003 (video, id-keyed) ---
+[  13.35] >> 0xAE01 GRANT protoid=01 sid=0x0003 (video, id-keyed): ff 5a 00 1b 40 12 03 0a 2d 40 40 00 11 ae 01 00 05 00 00 01 00 06 00 01 00 03 b0
+[  13.35] << ACK (ack=0x12)
+[  19.39] --- GRANT name=com.useeplus.protocol sid=0x0000 ---
+[  19.39] >> 0xAE01 GRANT name=com.useeplus.protocol sid=0x0000: ff 5a 00 30 40 13 03 0a 17 40 40 00 26 ae 01 00 1a 00 00 63 6f 6d 2e 75 73 65 65 70 6c 75 73 2e 70 72 6f 74 6f 63 6f 6c ...
+[  19.39] << ACK (ack=0x13)
+[  25.48] --- GRANT protoid=01 sid=0x000A ---
+[  25.49] >> 0xAE01 GRANT protoid=01 sid=0x000A: ff 5a 00 1b 40 14 03 0a 2b 40 40 00 11 ae 01 00 05 00 00 01 00 06 00 01 00 0a a9
+[  25.49] << ACK (ack=0x14)
+[  42.19] ENDE: 0 Frames; AE00/AE02 gedumpt: 0 (-> tools/replug14_ae_dump.bin); Geräte-ACKs: 9; link msgs=['0x1d01', '0xaa01', '0xea02']; gone=False

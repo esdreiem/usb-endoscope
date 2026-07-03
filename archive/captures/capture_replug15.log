@@ -1,0 +1,7 @@
+[   3.08] keine Beats -> Self-Reboot via 0xAA02 (Link kurz aufbauen, dann 0xAA02)
+[  10.38] Reboot-Trigger: [Errno 60] Operation timed out
+[  18.56] Gerät nach Reboot zurück
+[  19.84] << CTRL AuthCert (502B, 1p)
+[  19.84]      p0: 492B 30 82 02 5b 06 09 2a 86 48 86 f7 0d 01 07 02 a0 82 02 4c 30 82 02 48 02 01 01 31 00 ...
+[  34.58] kein Link-Up - ENDE
+[  34.58] !! iAP-in weg

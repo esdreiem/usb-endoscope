@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+
+# Python (the tools/ scripts)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+
+# Editors / local tooling
+.idea/
+.vscode/
+.claude/
+*.swp
+
+# Local capture output (don't commit new raw dumps)
+*.raw
+tools/*.local.*
+
+# Node (only if you ever add tooling)
+node_modules/

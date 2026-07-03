@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<title>USB-Endoskop</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="USB-Endoscope">
+<!--
+  USB-Endoskop Webapp  /  USB Endoscope Webapp
+  ============================================
+  A fully local, in-browser viewer for i4season / "Usee Plus" USB endoscopes
+  (VID 0x2ce3), speaking the reverse-engineered vendor protocol directly over
+  WebUSB.  No external scripts, fonts, analytics, or third-party requests — photos
+  and videos stay on your device and are only saved as downloads.  Installable as
+  a PWA (service worker) and fully offline-capable; all assets are same-origin.
+
+  Note: WebUSB requires a Chromium-based browser (Chrome/Edge/Brave/Opera) and a
+  "secure context" (https:// or http://localhost).
+
+  Copyright (C) 2026 esdreiem
+  This program is free software: you can redistribute it and/or modify it under
+  the terms of the GNU General Public License as published by the Free Software
+  Foundation, either version 3 of the License, or (at your option) any later
+  version.  This program is distributed WITHOUT ANY WARRANTY.  See the LICENSE
+  file or <https://www.gnu.org/licenses/> for the full license text.
+-->
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #1e293b;
+    --panel-2: #273449;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --accent: #38bdf8;
+    --danger: #f87171;
+    --ok: #4ade80;
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 1rem;
+    background: var(--panel);
+    flex-wrap: wrap;
+  }
+  header h1 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    flex: 1;
+    white-space: nowrap;
+  }
+  #appVersion {
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--muted);
+  }
+  header .logo {
+    width: 1.6rem;
+    height: 1.6rem;
+    flex: none;
+    border-radius: 6px;
+    display: block;
+  }
+  #installBtn {
+    flex: none;
+    background: var(--panel-2);
+    color: var(--text);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 0.35rem 0.7rem;
+    font-size: 0.82rem;
+    cursor: pointer;
+  }
+  #installBtn:hover { background: var(--accent); color: #06283d; }
+
+  #stage {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    overflow: hidden;
+    min-height: 40vh;
+  }
+  #videoWrap {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  video, #freezeCanvas {
+    max-width: 100%;
+    max-height: 100%;
+    transition: transform 0.15s ease;
+  }
+  #freezeCanvas { display: none; }
+  #placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+    padding: 1rem;
+  }
+  #placeholder .icon { font-size: 3rem; }
+
+  #statusBar {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .chip {
+    background: rgba(15, 23, 42, 0.75);
+    border-radius: 999px;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.72rem;
+    color: var(--text);
+  }
+  .chip.rec { color: var(--danger); font-weight: 700; }
+  .hidden { display: none !important; }
+
+  #controls {
+    background: var(--panel);
+    padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .row {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  select, button {
+    background: var(--panel-2);
+    color: var(--text);
+    border: 1px solid #334155;
+    border-radius: var(--radius);
+    padding: 0.55rem 0.8rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  select { flex: 1; min-width: 8rem; max-width: 100%; }
+  button:hover { border-color: var(--accent); }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+  button.primary { background: var(--accent); color: #082f49; font-weight: 700; border-color: var(--accent); }
+  button.danger  { background: var(--danger); color: #450a0a; font-weight: 700; border-color: var(--danger); }
+  button.active  { outline: 2px solid var(--accent); }
+
+  .zoomRow { display: flex; align-items: center; gap: 0.6rem; }
+  .zoomRow label { font-size: 0.8rem; color: var(--muted); white-space: nowrap; }
+  input[type="range"] { flex: 1; accent-color: var(--accent); }
+
+  #gallery {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding: 0.2rem 0;
+  }
+  #gallery:empty { display: none; }
+  #gallery a {
+    flex: 0 0 auto;
+    display: block;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    overflow: hidden;
+    line-height: 0;
+  }
+  #gallery img, #gallery video { height: 64px; width: auto; }
+
+  #log {
+    font-size: 0.75rem;
+    color: var(--muted);
+    max-height: 10rem;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  #log .err { color: var(--danger); }
+</style>
+</head>
+<body>
+
+<header>
+  <img class="logo" src="icons/icon.svg" alt="" width="26" height="26">
+  <h1>USB-Endoskop <span id="appVersion"></span></h1>
+  <button id="installBtn" hidden title="Als App installieren">⤓ Installieren</button>
+</header>
+
+<div id="stage">
+  <div id="videoWrap">
+    <video id="video" autoplay playsinline muted></video>
+    <canvas id="freezeCanvas"></canvas>
+    <canvas id="usbCanvas" style="display:none"></canvas>
+  </div>
+  <div id="placeholder">
+    <div class="icon">🔌</div>
+    <div>Endoskop per USB anschließen, dann <strong>„Verbinden“</strong> drücken.<br>
+    <small>Der Browser fragt einmalig, welches USB-Gerät freigegeben wird.</small></div>
+  </div>
+  <div id="statusBar">
+    <span class="chip hidden" id="resChip"></span>
+    <span class="chip rec hidden" id="recChip">● REC</span>
+    <span class="chip hidden" id="freezeChip">⏸ Standbild</span>
+  </div>
+</div>
+
+<div id="controls">
+  <div class="row">
+    <button id="usbStreamBtn" class="primary" title="Endoskop per WebUSB verbinden">▶ Verbinden</button>
+    <button id="stopBtn" disabled>⏹ Stopp</button>
+  </div>
+
+  <div class="row">
+    <button id="photoBtn" disabled title="Foto aufnehmen">📷 Foto</button>
+    <button id="recordBtn" disabled title="Video aufnehmen">⏺ Video</button>
+    <button id="freezeBtn" disabled title="Bild einfrieren">⏸ Einfrieren</button>
+    <button id="rotateBtn" disabled title="Um 90° drehen">↻ Drehen</button>
+    <button id="mirrorBtn" disabled title="Spiegeln">⇋ Spiegeln</button>
+    <button id="fullscreenBtn" disabled title="Vollbild">⛶ Vollbild</button>
+  </div>
+
+  <div class="zoomRow">
+    <label for="zoom">🔍 Digital-Zoom</label>
+    <input type="range" id="zoom" min="1" max="4" step="0.1" value="1" disabled>
+    <span id="zoomVal" style="font-size:0.8rem; color:var(--muted); min-width:2.5rem;">1.0×</span>
+  </div>
+
+  <div id="gallery"></div>
+  <div id="log"></div>
+</div>
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+const video = $("video");
+const freezeCanvas = $("freezeCanvas");
+const els = {
+  usbStreamBtn: $("usbStreamBtn"), stopBtn: $("stopBtn"),
+  photoBtn: $("photoBtn"), recordBtn: $("recordBtn"), freezeBtn: $("freezeBtn"),
+  rotateBtn: $("rotateBtn"), mirrorBtn: $("mirrorBtn"),
+  fullscreenBtn: $("fullscreenBtn"), zoom: $("zoom"), zoomVal: $("zoomVal"),
+  gallery: $("gallery"), log: $("log"), placeholder: $("placeholder"),
+  resChip: $("resChip"), recChip: $("recChip"), freezeChip: $("freezeChip"),
+};
+
+let stream = null;
+let recorder = null;
+let recordedChunks = [];
+let rotation = 0;
+let mirrored = false;
+let frozen = false;
+
+function log(msg, isError = false) {
+  const line = document.createElement("div");
+  if (isError) line.className = "err";
+  line.textContent = msg;
+  els.log.prepend(line);
+  while (els.log.children.length > 20) els.log.lastChild.remove();
+  // Log-Spiegel: überlebt Tab-Schließen/Re-Enumeration und ist aus jedem Tab
+  // derselben Origin lesbar (Auswertung einer Session aus einem anderen Tab).
+  try {
+    const hist = JSON.parse(localStorage.getItem("usbcam-log") || "[]");
+    hist.push(`${new Date().toISOString().slice(11, 19)} ${isError ? "⚠ " : ""}${msg}`);
+    localStorage.setItem("usbcam-log", JSON.stringify(hist.slice(-300)));
+  } catch (_) { /* Speicher voll o.ä. — Anzeige oben reicht */ }
+}
+
+function timestamp() {
+  const d = new Date();
+  const p = n => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}_${p(d.getHours())}-${p(d.getMinutes())}-${p(d.getSeconds())}`;
+}
+
+// ---- Stopp -----------------------------------------------------------------
+
+function stopCamera(silent = false) {
+  if (usbStreaming) stopUsbStream();
+  if (recorder && recorder.state !== "inactive") recorder.stop();
+  if (stream) {
+    stream.getTracks().forEach(t => t.stop());
+    stream = null;
+    if (!silent) log("Stream gestoppt.");
+  }
+  video.srcObject = null;
+  frozen = false;
+  freezeCanvas.style.display = "none";
+  video.style.display = "";
+  els.placeholder.classList.remove("hidden");
+  els.resChip.classList.add("hidden");
+  els.recChip.classList.add("hidden");
+  els.freezeChip.classList.add("hidden");
+  setControlsEnabled(false);
+}
+
+function setControlsEnabled(on) {
+  els.stopBtn.disabled = !on;
+  els.photoBtn.disabled = !on;
+  els.recordBtn.disabled = !on;
+  els.freezeBtn.disabled = !on;
+  els.rotateBtn.disabled = !on;
+  els.mirrorBtn.disabled = !on;
+  els.fullscreenBtn.disabled = !on;
+  els.zoom.disabled = !on;
+  els.freezeBtn.classList.toggle("active", frozen);
+}
+
+// ---- Bildtransformation (Drehen / Spiegeln / Zoom) --------------------------
+
+function applyTransform() {
+  const scale = parseFloat(els.zoom.value);
+  const t = `rotate(${rotation}deg) scaleX(${mirrored ? -scale : scale}) scaleY(${scale})`;
+  video.style.transform = t;
+  freezeCanvas.style.transform = t;
+  els.zoomVal.textContent = `${scale.toFixed(1)}×`;
+}
+
+// ---- Foto -------------------------------------------------------------------
+
+function takePhoto() {
+  if (!video.videoWidth) return;
+  const w = video.videoWidth, h = video.videoHeight;
+  const rot = ((rotation % 360) + 360) % 360;
+  const canvas = document.createElement("canvas");
+  canvas.width  = (rot === 90 || rot === 270) ? h : w;
+  canvas.height = (rot === 90 || rot === 270) ? w : h;
+  const ctx = canvas.getContext("2d");
+  ctx.translate(canvas.width / 2, canvas.height / 2);
+  ctx.rotate(rot * Math.PI / 180);
+  if (mirrored) ctx.scale(-1, 1);
+  const src = frozen ? freezeCanvas : video;
+  ctx.drawImage(src, -w / 2, -h / 2, w, h);
+  canvas.toBlob(blob => {
+    if (!blob) return;
+    addToGallery(blob, `endoskop_${timestamp()}.jpg`, "image");
+    log("Foto gespeichert (siehe Galerie unten).");
+  }, "image/jpeg", 0.92);
+}
+
+// ---- Video ------------------------------------------------------------------
+
+function toggleRecording() {
+  if (recorder && recorder.state === "recording") {
+    recorder.stop();
+    return;
+  }
+  recordedChunks = [];
+  const mime = ["video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm", "video/mp4"]
+    .find(m => MediaRecorder.isTypeSupported(m)) || "";
+  try {
+    recorder = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined);
+  } catch (err) {
+    log(`Aufnahme nicht möglich: ${err.message}`, true);
+    return;
+  }
+  recorder.ondataavailable = e => { if (e.data.size) recordedChunks.push(e.data); };
+  recorder.onstop = () => {
+    const type = recorder.mimeType || "video/webm";
+    const ext = type.includes("mp4") ? "mp4" : "webm";
+    const blob = new Blob(recordedChunks, { type });
+    addToGallery(blob, `endoskop_${timestamp()}.${ext}`, "video");
+    els.recChip.classList.add("hidden");
+    els.recordBtn.classList.remove("active");
+    els.recordBtn.textContent = "⏺ Video";
+    log("Videoaufnahme beendet (siehe Galerie unten).");
+  };
+  recorder.start();
+  els.recChip.classList.remove("hidden");
+  els.recordBtn.classList.add("active");
+  els.recordBtn.textContent = "⏹ Aufnahme stoppen";
+  log("Videoaufnahme läuft…");
+}
+
+// ---- Standbild --------------------------------------------------------------
+
+function toggleFreeze() {
+  frozen = !frozen;
+  if (frozen) {
+    freezeCanvas.width = video.videoWidth;
+    freezeCanvas.height = video.videoHeight;
+    freezeCanvas.getContext("2d").drawImage(video, 0, 0);
+    freezeCanvas.style.display = "";
+    video.style.display = "none";
+    els.freezeChip.classList.remove("hidden");
+  } else {
+    freezeCanvas.style.display = "none";
+    video.style.display = "";
+    els.freezeChip.classList.add("hidden");
+  }
+  els.freezeBtn.classList.toggle("active", frozen);
+  applyTransform();
+}
+
+// ---- Galerie ----------------------------------------------------------------
+
+function addToGallery(blob, filename, kind) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.title = `${filename} – zum Speichern antippen`;
+  if (kind === "image") {
+    const img = document.createElement("img");
+    img.src = url;
+    a.append(img);
+  } else {
+    const v = document.createElement("video");
+    v.src = url;
+    v.muted = true;
+    a.append(v);
+  }
+  els.gallery.prepend(a);
+  // Direkt zusätzlich als Download anstoßen
+  a.click();
+}
+
+// ---- USB-Direktstream (WebUSB, i4season-Vendor-Protokoll) ---------------------
+// Für die Endoskope von "Geek szitman useepluscam" (VID 0x2ce3). Das ECHTE
+// Protokoll wurde aus der Original-App "Usee Plus" (com.i4season.useeplus)
+// mitgeschnitten (Frida/USBDEVFS, siehe tools/app_capture_init_sequence.txt) —
+// es ist KEIN UVC, KEIN iAP2 und KEIN MJPEG, sondern:
+//   1. useeplus-Interface (bInterfaceProtocol 1) auf Alt-Setting 1 (aktiviert
+//      den Bulk-IN-Endpunkt, hier EP 0x82).
+//   2. Control-IN  (Klasse, Gerät)  bReq 0x00, wValue 0x0005, 512 B  -> Geräte-
+//      Info (Klartext: "i4season" / Modell / Firmware / Auflösung 640x480).
+//   3. Control-OUT (Klasse, Gerät)  bReq 0x01, wValue 0x0005, 64x '0'  -> Start.
+//   4. Bulk-IN vom useeplus-IN-EP: rohes YUYV422 (640x480x2 = 614400 B/Frame),
+//      dazwischen 511-B-Header-Pakete (Magic dd cc …), die übersprungen werden.
+// Die Frames werden per YUYV->RGB auf usbCanvas gezeichnet; Foto/Video/Zoom
+// laufen über die Canvas-captureStream (video.srcObject) weiter.
+
+const usbCanvas = $("usbCanvas");
+let usbDev = null;
+let usbStreaming = false;
+
+const sleepMs = ms => new Promise(r => setTimeout(r, ms));
+const hexStr = a => [...a].map(x => x.toString(16).padStart(2, "0")).join(" ");
+const isGoneError = e => /disconnect|no such device|not found|unavailable|transfer error|device state/i.test(String(e?.message ?? e));
+
+const USB_KNOWN_VENDORS = [0x2CE3, 0x0329]; // useeplus-Endoskope (Geek szitman, Oasis)
+const USB_START_DATA = new Uint8Array(64).fill(0x30); // 64x '0'
+
+// ---- YUYV422 -> RGBA auf usbCanvas (Ganzzahl-Approximation, pro Frame reused)
+let yuvImage = null;
+function drawYUYV(u8, w, h) {
+  const ctx = usbCanvas.getContext("2d");
+  if (usbCanvas.width !== w || usbCanvas.height !== h) {
+    usbCanvas.width = w; usbCanvas.height = h; yuvImage = null;
+    els.resChip.textContent = `${w} × ${h} (USB)`;
+    els.resChip.classList.remove("hidden");
+  }
+  if (!yuvImage || yuvImage.width !== w) yuvImage = ctx.createImageData(w, h);
+  const d = yuvImage.data;
+  let p = 0;
+  for (let i = 0; i + 3 < u8.length; i += 4) {
+    const y0 = u8[i], u = u8[i + 1], y1 = u8[i + 2], v = u8[i + 3];
+    const uu = u - 128, vv = v - 128;
+    const r1 = (359 * vv) >> 8, g1 = (88 * uu + 183 * vv) >> 8, b1 = (454 * uu) >> 8;
+    let r = y0 + r1, g = y0 - g1, b = y0 + b1;
+    d[p++] = r < 0 ? 0 : r > 255 ? 255 : r;
+    d[p++] = g < 0 ? 0 : g > 255 ? 255 : g;
+    d[p++] = b < 0 ? 0 : b > 255 ? 255 : b;
+    d[p++] = 255;
+    r = y1 + r1; g = y1 - g1; b = y1 + b1;
+    d[p++] = r < 0 ? 0 : r > 255 ? 255 : r;
+    d[p++] = g < 0 ? 0 : g > 255 ? 255 : g;
+    d[p++] = b < 0 ? 0 : b > 255 ? 255 : b;
+    d[p++] = 255;
+  }
+  ctx.putImageData(yuvImage, 0, 0);
+}
+
+// ---- Verbindungsaufbau --------------------------------------------------------
+async function startUsbStream() {
+  if (!navigator.usb) { log("WebUSB wird von diesem Browser nicht unterstützt.", true); return; }
+  stopCamera(true);
+  const granted = (await navigator.usb.getDevices().catch(() => []))
+    .find(d => USB_KNOWN_VENDORS.includes(d.vendorId));
+  if (granted) { usbDev = granted; log(`Nutze freigegebenes Gerät: ${granted.productName || "USB-Gerät"}.`); }
+  else {
+    try { usbDev = await navigator.usb.requestDevice({ filters: USB_KNOWN_VENDORS.map(v => ({ vendorId: v })) }); }
+    catch (err) { log("Kein USB-Gerät ausgewählt."); return; }
+  }
+  runVendorSession();
+}
+
+navigator.usb?.addEventListener?.("connect", e => {
+  if (!USB_KNOWN_VENDORS.includes(e.device.vendorId)) return;
+  if (usbStreaming || usbDev || stream) return;
+  log("Endoskop angesteckt – Stream startet automatisch …");
+  usbDev = e.device;
+  runVendorSession();
+});
+
+// useeplus-Interface (bInterfaceProtocol 1) mit Bulk-IN finden.
+function detectStreamInterface(dev) {
+  const cfg = dev.configuration || dev.configurations[0];
+  let best = null;
+  for (const iface of cfg.interfaces) {
+    for (const alt of iface.alternates) {
+      const bin = alt.endpoints.find(e => e.type === "bulk" && e.direction === "in");
+      if (!bin) continue;
+      const isUsee = alt.interfaceProtocol === 1 || /useeplus/i.test(alt.interfaceName || "");
+      const entry = { iface: iface.interfaceNumber, alt: alt.alternateSetting, epIn: bin.endpointNumber, usee: isUsee };
+      if (isUsee) return entry;      // Rolle gewinnt
+      if (!best) best = entry;
+    }
+  }
+  return best;
+}
+
+async function runVendorSession() {
+  try {
+    await usbDev.open();
+    if (!usbDev.configuration) await usbDev.selectConfiguration(1);
+    const s = detectStreamInterface(usbDev);
+    if (!s) throw new Error("Kein Bulk-IN-Endpunkt gefunden – unbekanntes Gerät.");
+    await usbDev.claimInterface(s.iface);
+    if (s.alt) { try { await usbDev.selectAlternateInterface(s.iface, s.alt); } catch (err) { log(`Alt-Setting: ${err.message}`, true); } }
+    log(`useeplus-Interface ${s.iface}, Bulk-IN EP${s.epIn} aktiv.`);
+
+    const sendInit = async () => {
+      // Control-IN: Geräte-Info holen (Klasse/Gerät, bReq 0x00, wValue 0x0005)
+      try {
+        const r = await usbDev.controlTransferIn(
+          { requestType: "class", recipient: "device", request: 0x00, value: 0x0005, index: 0x0000 }, 512);
+        if (r.data && r.data.byteLength) {
+          const u = new Uint8Array(r.data.buffer, r.data.byteOffset, r.data.byteLength);
+          const txt = [...u.slice(0, 48)].map(c => (c >= 32 && c < 127) ? String.fromCharCode(c) : ".").join("");
+          log(`Geräte-Info: ${txt}`);
+        }
+      } catch (err) { log(`Info-Abfrage: ${err.message}`, true); }
+      // Control-OUT: Start (Klasse/Gerät, bReq 0x01, wValue 0x0005, 64x '0')
+      const w = await usbDev.controlTransferOut(
+        { requestType: "class", recipient: "device", request: 0x01, value: 0x0005, index: 0x0000 }, USB_START_DATA);
+      log(`Start-Kommando: ${w.status}`);
+    };
+    await sendInit();
+
+    usbStreaming = true;
+    usbCanvas.width = 640; usbCanvas.height = 480;
+    stream = usbCanvas.captureStream(30);   // Canvas-Stream speist <video> + MediaRecorder (Foto/Video/Zoom)
+    video.srcObject = stream;
+    els.placeholder.classList.add("hidden");
+    setControlsEnabled(true);
+
+    pumpVendor(s.epIn, sendInit);
+  } catch (err) {
+    await handleUsbGone(err);
+  }
+}
+
+async function pumpVendor(epIn, sendInit) {
+  let frames = 0, bytes = 0, resends = 0, headerLogged = false;
+  while (usbStreaming) {
+    let res;
+    try {
+      res = await usbDev.transferIn(epIn, 614400);
+    } catch (err) {
+      if (!usbStreaming) break;
+      if (isGoneError(err)) { usbStreaming = false; await handleUsbGone(err); return; }
+      log(`USB-Lesefehler: ${err.message}`, true); break;
+    }
+    if (res.status === "stall") { try { await usbDev.clearHalt("in", epIn); } catch (_) {} continue; }
+    const len = res.data ? res.data.byteLength : 0;
+    if (!len) {
+      if (++resends <= 3) { log(`Keine Daten – Start-Kommando erneut …`); try { await sendInit(); } catch (_) {} }
+      else if (resends === 4) log("Weiterhin keine Daten – Endoskop frisch anstecken.", true);
+      continue;
+    }
+    resends = 0;
+    bytes += len;
+    const u8 = new Uint8Array(res.data.buffer, res.data.byteOffset, len);
+    if (len === 614400) {            // volles YUYV-Frame
+      drawYUYV(u8, 640, 480);
+      if (++frames === 1) log("Erstes Bild empfangen ✅");
+    } else {                         // 511-B-Header/Status-Paket
+      if (!headerLogged) { headerLogged = true; log(`Header-Paket (${len} B): ${hexStr(u8.slice(0, 16))}`); }
+    }
+  }
+  log(`USB-Stream beendet (${frames} Frames, ${(bytes / 1048576).toFixed(1)} MB).`);
+}
+
+async function handleUsbGone(err) {
+  if (isGoneError(err)) {
+    const vid = usbDev?.vendorId, pid = usbDev?.productId;
+    log("Gerät hat sich abgemeldet – warte auf Neuanmeldung …");
+    usbStreaming = false;
+    const nd = await waitForDevice(vid, pid, 8000);
+    if (nd) { usbDev = nd; runVendorSession(); return; }
+    log("Gerät nicht wiedergekommen – bitte erneut anstecken.", true);
+  } else {
+    log(`USB-Fehler: ${err?.name || "Fehler"} – ${err?.message || err}`, true);
+  }
+  stopUsbStream();
+}
+
+async function waitForDevice(vendorId, productId, ms) {
+  const t0 = Date.now();
+  while (Date.now() - t0 < ms) {
+    const list = await navigator.usb.getDevices().catch(() => []);
+    const d = list.find(x => x.vendorId === vendorId && x.productId === productId);
+    if (d) { try { await d.open(); return d; } catch (_) {} }
+    await sleepMs(500);
+  }
+  return null;
+}
+
+function stopUsbStream() {
+  usbStreaming = false;
+  if (usbDev) {
+    const d = usbDev; usbDev = null;
+    Promise.resolve().then(async () => { try { await d.close(); } catch (_) {} });
+  }
+}
+
+// ---- Vollbild ---------------------------------------------------------------
+
+function toggleFullscreen() {
+  const stage = $("stage");
+  if (document.fullscreenElement) document.exitFullscreen();
+  else stage.requestFullscreen?.();
+}
+
+// ---- Events -----------------------------------------------------------------
+
+els.usbStreamBtn.addEventListener("click", startUsbStream);
+els.stopBtn.addEventListener("click", () => stopCamera());
+els.photoBtn.addEventListener("click", takePhoto);
+els.recordBtn.addEventListener("click", toggleRecording);
+els.freezeBtn.addEventListener("click", toggleFreeze);
+els.rotateBtn.addEventListener("click", () => { rotation = (rotation + 90) % 360; applyTransform(); });
+els.mirrorBtn.addEventListener("click", () => { mirrored = !mirrored; els.mirrorBtn.classList.toggle("active", mirrored); applyTransform(); });
+els.fullscreenBtn.addEventListener("click", toggleFullscreen);
+els.zoom.addEventListener("input", applyTransform);
+
+// ---- Init -------------------------------------------------------------------
+
+// Wird beim Deploy durch das Commit-Kürzel ersetzt (siehe pages.yml)
+const APP_VERSION = "__APP_VERSION__";
+
+(async () => {
+  const version = APP_VERSION.startsWith("__") ? "dev" : APP_VERSION;
+  $("appVersion").textContent = version;
+  document.title += ` (${version})`;
+
+  // PWA: Service Worker macht die App installierbar und offline-fähig
+  // (nur same-origin-Assets, keine externen Requests).
+  if ("serviceWorker" in navigator && window.isSecureContext) {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  }
+  // Installations-Button (Chromium feuert 'beforeinstallprompt').
+  let deferredPrompt = null;
+  const installBtn = $("installBtn");
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.hidden = false;
+  });
+  installBtn.addEventListener("click", async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice.catch(() => {});
+    deferredPrompt = null;
+    installBtn.hidden = true;
+  });
+  window.addEventListener("appinstalled", () => {
+    installBtn.hidden = true;
+    log("App installiert ✅");
+  });
+
+  if (!navigator.usb) {
+    // WebUSB gibt es nur in Chromium-Browsern (Chrome, Edge, Brave, Opera).
+    // Firefox und Safari unterstützen es nicht – auf iOS/iPadOS kein Browser.
+    els.usbStreamBtn.disabled = true;
+    els.placeholder.innerHTML =
+      '<div class="icon">🚫</div><div>Dieses Endoskop spricht <strong>WebUSB</strong> – das ' +
+      'unterstützen nur Chromium-Browser (<strong>Chrome, Edge, Brave, Opera</strong>). ' +
+      'Firefox und Safari können es nicht, und auf iPhone/iPad kein Browser.<br>' +
+      '<small>Bitte diese Seite in Chrome, Edge oder Brave öffnen.</small></div>';
+    log("WebUSB nicht verfügbar – bitte einen Chromium-Browser verwenden.", true);
+    return;
+  }
+  if (!window.isSecureContext) {
+    log("⚠ Seite läuft nicht in einem sicheren Kontext (https:// oder localhost nötig) – WebUSB wird vom Browser blockiert.", true);
+  }
+})();
+</script>
+</body>
+</html>

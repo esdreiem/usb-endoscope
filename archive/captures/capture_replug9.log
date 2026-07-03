@@ -1,0 +1,31 @@
+[   0.00] warte auf ABSTECKEN ...
+[ 163.54] abgesteckt. warte auf ANSTECKEN ...
+[ 166.63] angesteckt! claim If0 ONLY
+[ 166.80] >> DETECT-ECHO: ff 55 02 00 ee 10
+[ 166.81] >> SYN/ACK: ff 5a 00 17 c0 0b 00 00 c5 01 01 10 00 0b b8 05 dc 01 00 0a 00 01 3e
+[ 166.81] *** LINK UP ***
+[ 166.82] >> RequestAuthenticationCertificate: ff 5a 00 10 40 0c 00 0a 41 40 40 00 06 aa 00 d0
+[ 166.82] << iAP2 ctrl=0x40 seq=0x00 ack=0x0c sess=0x00 len(payload)=0
+[ 167.05] << iAP2 ctrl=0x40 seq=0x01 ack=0x0c sess=0x0a len(payload)=619
+[ 167.05] >> ACK seq 0x01: ff 5a 00 09 40 0c 01 00 51
+[ 167.05]    MSG AuthenticationCertificate: p0=30 82 02 5b 06 09 2a 86 48 86 f7 0d 01 07 02 a0 82 02 4c 30 82 02 48 02 01 01 31 00 30 0b 06 09 2a 86 48 86 f7 0d 01 07...
+[ 167.13] Zertifikat: JA, 609 B
+[ 167.13] >> AuthenticationSucceeded: ff 5a 00 10 40 0d 01 0a 3f 40 40 00 06 aa 05 cb
+[ 167.13] << iAP2 ctrl=0x40 seq=0x01 ack=0x0d sess=0x00 len(payload)=0
+[ 168.63] >> StartIdentification: ff 5a 00 10 40 0e 01 0a 3e 40 40 00 06 1d 00 5d
+[ 168.64] << iAP2 ctrl=0x40 seq=0x01 ack=0x0e sess=0x00 len(payload)=0
+[ 168.64] << iAP2 ctrl=0x40 seq=0x02 ack=0x0e sess=0x0a len(payload)=200
+[ 168.64] >> ACK seq 0x02: ff 5a 00 09 40 0e 02 00 4e
+[ 168.64]    MSG IdentificationInformation: p0=43 61 6d 65 72 61 00; p1=4c 54 2d 30 31 00; p2=44 65 76 69 63 65 00; p3=30 32 32 30 31 38 30 35 30 31 30 30 30 33 30 00; p4=31 2e 30 00; p5=50 56 2d 31 00; p6=ea 02 ae 00 ae 02; p7=ae 01; p8=00; p9=00 64; p10=00 05 00 00 01 00 1a 00 01 63 6f 6d 2e 75 73 65 65 70 6c 75 73 2e 70 72 6f 74 6f 63 6f 6c 00 00 05 00 02 01 00 06 00 03...; p11=4e 51 5a 4d 41 36 42 51 44 32 00; p12=65 6e 00; p13=65 6e 00; p16=00 06 00 00 00 00 00 09 00 01 69 41 50 32 00 00 04 00 02
+[ 168.74]    EA-Protokoll-Kandidat in Param 10: b'\x00\x05\x00\x00\x01\x00\x1a\x00\x01com.useeplus.protocol\x00\x00\x05\x00\x02\x01\x00\x06\x00\x03\x00\x00'
+[ 168.74] >> IdentificationAccepted: ff 5a 00 10 40 0f 02 0a 3c 40 40 00 06 1d 02 5b
+[ 168.74] << iAP2 ctrl=0x40 seq=0x02 ack=0x0f sess=0x00 len(payload)=0
+[ 168.75] << iAP2 ctrl=0x40 seq=0x03 ack=0x0f sess=0x0a len(payload)=32
+[ 168.75] >> StartExternalAccessoryProtocolSession: ff 5a 00 1b 40 10 02 0a 30 40 40 00 11 ea 00 00 05 00 00 01 00 06 00 01 10 00 68
+[ 169.26] >> ACK seq 0x03: ff 5a 00 09 40 10 03 00 4b
+[ 169.26]    MSG 0xea02: p0=63 6f 6d 2e 75 73 65 65 70 6c 75 73 2e 69 73 74 6f 72 61 67 65 00
+[ 169.26] << iAP2 ctrl=0x40 seq=0x02 ack=0x10 sess=0x00 len(payload)=0
+[ 178.76] Control-Phase fertig: 3 Nachrichten, gone=False
+[ 179.27] If1 -> Alt1
+[ 179.57] >> CONNECT: bb aa 05 00 00
+[ 195.08] ENDE: 0 Frames, 0 RX-Events, 0 B

@@ -1,0 +1,68 @@
+[   0.00] warte auf ABSTECKEN ...
+[  69.27] abgesteckt. warte auf ANSTECKEN ...
+[  73.72] angesteckt! claim If0
+[  73.82] >> DETECT-ECHO: ff 55 02 00 ee 10
+[  73.82] >> SYN/ACK: ff 5a 00 17 c0 0b 00 00 c5 01 01 10 00 0b b8 05 dc 01 00 0a 00 01 3e
+[  73.82] *** LINK UP ***
+[  73.84] >> RequestAuthenticationCertificate: ff 5a 00 10 40 0c 00 0a 41 40 40 00 06 aa 00 d0
+[  74.07] << CTRL AuthCert (619B, 1p)
+[  74.07]      p0: 609B 30 82 02 5b 06 09 2a 86 48 86 f7 0d 01 07 02 a0 82 02 4c 30 82 02 48 02 01 01 31 00 ...
+[  74.10] >> AuthenticationSucceeded: ff 5a 00 10 40 0d 01 0a 3f 40 40 00 06 aa 05 cb
+[  74.91] >> StartIdentification: ff 5a 00 10 40 0e 01 0a 3e 40 40 00 06 1d 00 5d
+[  74.92] << CTRL IdentInfo (200B, 15p)
+[  74.92]      p0: 43 61 6d 65 72 61 00  = "Camera"
+[  74.92]      p1: 4c 54 2d 30 31 00  = "LT-01"
+[  74.92]      p2: 44 65 76 69 63 65 00  = "Device"
+[  74.92]      p3: 30 32 32 30 31 38 30 35 30 31 30 30 30 33 30 00  = "022018050100030"
+[  74.92]      p4: 31 2e 30 00  = "1.0"
+[  74.92]      p5: 50 56 2d 31 00  = "PV-1"
+[  74.92]      p6: ea 02 ae 00 ae 02
+[  74.92]      p7: ae 01
+[  74.92]      p8: 00
+[  74.92]      p9: 00 64
+[  74.92]      p10: 42B 00 05 00 00 01 00 1a 00 01 63 6f 6d 2e 75 73 65 65 70 6c 75 73 2e 70 72 6f 74 6f 63 ...
+[  74.92]      p11: 4e 51 5a 4d 41 36 42 51 44 32 00  = "NQZMA6BQD2"
+[  74.92]      p12: 65 6e 00  = "en"
+[  74.92]      p13: 65 6e 00  = "en"
+[  74.92]      p16: 00 06 00 00 00 00 00 09 00 01 69 41 50 32 00 00 04 00 02
+[  74.96] >> IdentificationAccepted: ff 5a 00 10 40 0f 02 0a 3c 40 40 00 06 1d 02 5b
+[  74.97] << CTRL EA02(req) (32B, 1p)
+[  74.97]      p0: 63 6f 6d 2e 75 73 65 65 70 6c 75 73 2e 69 73 74 6f 72 61 67 65 00  = "com.useeplus.istorage"
+[  75.07] Handshake fertig; angefragt: com.useeplus.istorage
+[  75.07] === PHASE 1: 0xAE01-Brute-Force (ohne Bulk) ===
+[  75.07] --- grant istorage sid1 ---
+[  75.07] >> 0xAE01 grant istorage sid1: ff 5a 00 30 40 10 03 0a 1a 40 40 00 26 ae 01 00 1a 00 00 63 6f 6d 2e 75 73 65 65 70 6c 75 73 2e 69 73 74 6f ...
+[  79.11] --- grant istorage sid1 +cmd01 ---
+[  79.11] >> 0xAE01 grant istorage sid1 +cmd01: ff 5a 00 35 40 11 03 0a 14 40 40 00 2b ae 01 00 1a 00 00 63 6f 6d 2e 75 73 65 65 70 6c 75 73 2e 69 73 74 6f ...
+[  83.14] --- grant protocol sid2 ---
+[  83.14] >> 0xAE01 grant protocol sid2: ff 5a 00 30 40 12 03 0a 18 40 40 00 26 ae 01 00 1a 00 00 63 6f 6d 2e 75 73 65 65 70 6c 75 73 2e 70 72 6f 74 ...
+[  87.17] --- grant protocol sid2 +cmd01 ---
+[  87.17] >> 0xAE01 grant protocol sid2 +cmd01: ff 5a 00 35 40 13 03 0a 12 40 40 00 2b ae 01 00 1a 00 00 63 6f 6d 2e 75 73 65 65 70 6c 75 73 2e 70 72 6f 74 ...
+[  91.22] --- grant protoid1 sid2 ---
+[  91.22] >> 0xAE01 grant protoid1 sid2: ff 5a 00 1b 40 14 03 0a 2b 40 40 00 11 ae 01 00 05 00 00 01 00 06 00 01 00 02 b1
+[  95.26] --- p0=05 00 00 (legacy start) ---
+[  95.26] >> 0xAE01 p0=05 00 00 (legacy start): ff 5a 00 17 40 15 03 0a 2e 40 40 00 0d ae 01 00 07 00 00 05 00 00 b8
+[  99.28] --- p0=05 00 00 07 (legacy+cam7) ---
+[  99.28] >> 0xAE01 p0=05 00 00 07 (legacy+cam7): ff 5a 00 18 40 16 03 0a 2c 40 40 00 0e ae 01 00 08 00 00 05 00 00 07 af
+[ 103.31] --- p0=BB AA 05 00 00 (legacy verbatim) ---
+[ 103.31] >> 0xAE01 p0=BB AA 05 00 00 (legacy verbatim): ff 5a 00 19 40 17 03 0a 2a 40 40 00 0f ae 01 00 09 00 00 bb aa 05 00 00 4f
+[ 107.35] --- p0=01 ---
+[ 107.35] >> 0xAE01 p0=01: ff 5a 00 15 40 18 03 0a 2d 40 40 00 0b ae 01 00 05 00 00 01 c0
+[ 111.39] --- p0=07 (cam7) ---
+[ 111.39] >> 0xAE01 p0=07 (cam7): ff 5a 00 15 40 19 03 0a 2c 40 40 00 0b ae 01 00 05 00 00 07 ba
+[ 115.42] --- p0=0B (cam11) ---
+[ 115.42] >> 0xAE01 p0=0B (cam11): ff 5a 00 15 40 1a 03 0a 2b 40 40 00 0b ae 01 00 05 00 00 0b b6
+[ 119.45] --- p0=name(istorage) ---
+[ 119.45] >> 0xAE01 p0=name(istorage): ff 5a 00 2a 40 1b 03 0a 15 40 40 00 20 ae 01 00 1a 00 00 63 6f 6d 2e 75 73 65 65 70 6c 75 73 2e 69 73 74 6f ...
+[ 123.51] --- p0=name(protocol) ---
+[ 123.51] >> 0xAE01 p0=name(protocol): ff 5a 00 2a 40 1c 03 0a 14 40 40 00 20 ae 01 00 1a 00 00 63 6f 6d 2e 75 73 65 65 70 6c 75 73 2e 70 72 6f 74 ...
+[ 127.55] --- no params ---
+[ 127.55] >> 0xAE01 no params: ff 5a 00 10 40 1d 03 0a 2d 40 40 00 06 ae 01 cb
+[ 131.60] Phase 1 fertig: video=False, gone=False
+[ 131.60] === PHASE 2: iAP aufgeben -> useeplus-Bulk (Legacy BB AA) ===
+[ 132.01] If1->Alt1, EP0x82-Sniffer aktiv
+[ 132.31] >> Bulk BB AA 05: bb aa 05 00 00
+[ 136.32] >> Bulk BB AA 07: bb aa 07 00 00
+[ 140.32] >> Bulk MAGIC: ff 55 ff 55 ee 10
+[ 144.33] >> Bulk BB AA 0B: bb aa 0b 00 00
+[ 156.83] ENDE: 0 Frames; AE-dump 0; Bulk-RX 0 (0B); msgs=['0x1d01', '0xaa01', '0xea02']; gone=False

@@ -1,0 +1,20 @@
+{
+  "name": "USB-Endoscope",
+  "short_name": "USB-Endoscope",
+  "description": "Local, in-browser viewer for i4season / Usee Plus USB endoscopes over WebUSB. No app, no cloud — the image never leaves your device.",
+  "lang": "de",
+  "dir": "ltr",
+  "start_url": ".",
+  "scope": ".",
+  "id": "usb-endoscope",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0a0f1c",
+  "theme_color": "#0f172a",
+  "categories": ["utilities", "productivity"],
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

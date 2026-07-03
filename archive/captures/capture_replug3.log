@@ -1,0 +1,24 @@
+[22:19:14] waiting for device to be UNPLUGGED ...
+[22:20:17] unplugged. waiting for RE-PLUG ...
+[22:20:21] re-plugged! claiming If0 ONLY (like capture #1)
+[22:20:21] << EP81 detect #1 (0.11s): ff 55 02 00 ee 10
+[22:20:23] << EP81 detect #2 (2.12s): ff 55 02 00 ee 10
+[22:20:23] >> MAGIC -> 0x01: ff 55 ff 55 ee 10 ok
+[22:20:25] << EP81 post-magic: ff 55 02 00 ee 10
+[22:20:26] detect loop should have stopped now
+[22:20:27] >> CONNECT -> 0x02: bb aa 05 00 00 ok
+[22:20:30] >> CONNECT again -> 0x02: bb aa 05 00 00 ok
+[22:20:32] >> cid07 (video?) -> 0x02: bb aa 07 00 00 ok
+[22:20:35] >> cid0B -> 0x02: bb aa 0b 00 00 ok
+[22:20:37] >> connect+payload 00 -> 0x02: bb aa 05 01 00 00 ok
+[22:20:40] >> connect+payload 01 -> 0x02: bb aa 05 01 00 01 ok
+[22:20:42] >> cid01 -> 0x02: bb aa 01 00 00 ok
+[22:20:45] >> cid02 -> 0x02: bb aa 02 00 00 ok
+[22:20:47] >> cid03 -> 0x02: bb aa 03 00 00 ok
+[22:20:50] >> cid04 -> 0x02: bb aa 04 00 00 ok
+[22:20:52] >> cid06 -> 0x02: bb aa 06 00 00 ok
+[22:20:55] >> cid08 -> 0x02: bb aa 08 00 00 ok
+[22:20:57] >> cid00 -> 0x02: bb aa 00 00 00 ok
+[22:21:00] >> DETECT-echo -> 0x01: ff 55 02 00 ee 10 ok
+[22:21:02] >> CONNECT final -> 0x02: bb aa 05 00 00 ok
+[22:21:12] CAPTURE COMPLETE: 0 frames, 0 rx events

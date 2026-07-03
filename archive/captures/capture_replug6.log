@@ -1,0 +1,37 @@
+[  0.02] If0 geclaimt — adaptiver Knock startet
+[  0.02] << beat 1: ff 55 02 00 ee 10
+[  0.02] >> MAGIC #1 -> 0x01 ok
+[  2.02] << beat 2: ff 55 02 00 ee 10
+[  2.02] >> MAGIC #2 -> 0x01 ok
+[  4.03] << beat 3: ff 55 02 00 ee 10
+[  4.03] >> MAGIC #3 -> 0x01 ok
+[  6.04] << beat 4: ff 55 02 00 ee 10
+[  6.04] >> MAGIC #4 -> 0x01 ok
+[  8.05] << beat 5: ff 55 02 00 ee 10
+[  8.05] >> MAGIC #5 -> 0x01 ok
+[ 10.06] << beat 6: ff 55 02 00 ee 10
+[ 10.06] >> MAGIC #6 -> 0x01 ok
+[ 12.07] << beat 7: ff 55 02 00 ee 10
+[ 12.07] >> MAGIC #7 -> 0x01 ok
+[ 14.08] << beat 8: ff 55 02 00 ee 10
+[ 14.08] >> MAGIC #8 -> 0x01 ok
+[ 16.09] << beat 9: ff 55 02 00 ee 10
+[ 18.10] << beat 10: ff 55 02 00 ee 10
+[ 20.11] << beat 11: ff 55 02 00 ee 10
+[ 22.12] << beat 12: ff 55 02 00 ee 10
+[ 24.13] << beat 13: ff 55 02 00 ee 10
+[ 26.14] << beat 14: ff 55 02 00 ee 10
+[ 28.15] << beat 15: ff 55 02 00 ee 10
+[ 30.16] << beat 16: ff 55 02 00 ee 10
+[ 32.17] << beat 17: ff 55 02 00 ee 10
+[ 34.18] << beat 18: ff 55 02 00 ee 10
+[ 35.28] Beats liefen bis zum Limit — Knock nicht angenommen
+[ 35.28] 9 s Ruhe (Capture-#1-Timing) …
+[ 44.29] If1 -> Alt1
+[ 44.29] << EP0x81: 6B: ff 55 02 00 ee 10
+[ 44.60] >> CONNECT -> 0x02 ok
+[ 49.60] >> cid07 -> 0x02 ok
+[ 53.11] >> cid0B -> 0x02 ok
+[ 56.61] >> HELLO6 -> 0x02 ok
+[ 60.11] >> CONNECT2 -> 0x02 ok
+[ 74.13] ENDE: 0 Frames, 1 RX-Events, 6 B
