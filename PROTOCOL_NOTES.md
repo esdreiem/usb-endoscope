@@ -142,7 +142,7 @@ Earlier attempts went down two elaborate dead ends before that:
   Apple certificate, a `0xAE01` vendor "grant") — the link handshake was ACKed across
   17 replug captures but the device **never** streamed video.
 
-Both are preserved for transparency in [`archive/`](archive/) and narrated in
+Both dead ends are described in
 [`docs/REVERSE_ENGINEERING.md`](docs/REVERSE_ENGINEERING.md). The lesson: descriptor
 strings and plausible handshakes can send you down long dead ends; capturing what the
 real app actually does was worth more than all the protocol reverse-guessing combined.
@@ -172,7 +172,7 @@ Sackgassen (siehe [Historie](#historie)).
 | -------------- | ---------------------------------------------------------- |
 | USB VID / PID  | `0x2ce3` / `0x3828`                                        |
 | iManufacturer  | `Geek szitman`                                             |
-| iProduct       | `useepluscam`                                              |
+| iProduct       | `useepluscam`                                             |
 | iSerial        | `202402062300000` (Batch-/Datumscode, **nicht** pro Gerät) |
 | bcdDevice      | `0x0111`                                                   |
 | Vermarktet als | „Geek szitman useepluscam" / „Usee Plus"                   |
@@ -297,8 +297,8 @@ Frühere Versuche liefen davor in zwei aufwendige Sackgassen:
   609-Byte-Apple-Zertifikat, ein `0xAE01`-Vendor-„Grant") — der Link-Handshake wurde
   über 17 Replug-Captures hinweg ge-ackt, das Gerät hat aber **nie** Video gestreamt.
 
-Beides ist zur Transparenz in [`archive/`](archive/) aufbewahrt und in
-[`docs/REVERSE_ENGINEERING.md`](docs/REVERSE_ENGINEERING.md) erzählt. Die Lehre:
+Beide Sackgassen sind in
+[`docs/REVERSE_ENGINEERING.md`](docs/REVERSE_ENGINEERING.md) beschrieben. Die Lehre:
 Deskriptor-Strings und plausibel wirkende Handshakes können in lange Sackgassen führen;
 mitzuschneiden, was die echte App tatsächlich tut, war mehr wert als das gesamte
 Protokoll-Herumraten zusammen.

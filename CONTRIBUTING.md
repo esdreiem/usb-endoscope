@@ -204,8 +204,9 @@ straightforward translation.
 The full story — including the dead ends, the red-herring iAP2 handshake, and how
 Frida-on-USBDEVFS finally captured the real protocol — is written up in
 [`docs/REVERSE_ENGINEERING.md`](docs/REVERSE_ENGINEERING.md). Read it before you
-start; it will save you days. The dead-end investigation itself is preserved in
-[`archive/`](archive/) for full transparency.
+start; it will save you days. The dead-end investigation itself is written up
+there too — the raw captures and scripts are not published in this repo (they
+included the device's Apple MFi certificate), so that write-up is the record.
 
 ### Prior art & acknowledgements
 

@@ -65,15 +65,15 @@ Remember that `"iAP Interface"` string from Step 1?
 
 `iAP` is Apple's **iPod Accessory Protocol** — the framing used by MFi ("Made for iPhone") accessories. Combined with some Apple-certificate-shaped hints in the traffic, the descriptor string made a compelling case: *this is an iAP2 device, and we just need to complete the MFi handshake.*
 
-So we went deep. Really deep. The full body of this work now lives in [`archive/iap2-research/`](../archive/iap2-research/), preserved intentionally. We implemented:
+So we went deep. Really deep. The raw captures and scripts from this dead end aren't published in this repo — one of them held the device's own Apple MFi authentication certificate, which has no place in a public project — but the investigation is worth recording. We implemented:
 
 - iAP2 **detect / echo** beats to wake the link,
 - the **link SYN/ACK** handshake,
 - **authentication** using a 609-byte Apple certificate,
 - **identification**,
-- and a mysterious `0xAE01` vendor **"grant"** message we reconstructed from captures (preserved in [`archive/iap2-research/`](../archive/iap2-research/)).
+- and a mysterious `0xAE01` vendor **"grant"** message we reconstructed from captures.
 
-To pin down the handshake, we replugged the device **17 times**, logging every session — those captures are still in [`archive/captures/`](../archive/captures/) as `capture_replug1.log` through `capture_replug17.log`.
+To pin down the handshake, we replugged the device **17 times**, logging all 17 sessions (those raw logs aren't published here).
 
 And here's the maddening part: **the device ACKed the link handshake.** Every time. The SYN/ACK completed, the framing looked right, the state machine advanced. By every visible signal, we were talking to it correctly.
 
@@ -91,7 +91,7 @@ At this point we stopped trying to *deduce* the protocol and decided to *observe
 
 The setup: a **rooted Pixel phone**, the real "Usee Plus" app (`com.i4season.useeplus`), and [Frida](https://frida.re/) to hook it live.
 
-The first hook — [`archive/iap2-research/frida_usee_hook.js`](../archive/iap2-research/frida_usee_hook.js) — instrumented the Java `UsbDeviceConnection` API: `bulkTransfer`, `controlTransfer`, the obvious Android USB surface.
+The first hook instrumented the Java `UsbDeviceConnection` API: `bulkTransfer`, `controlTransfer`, the obvious Android USB surface.
 
 It caught **nothing.** No transfers, no bytes, silence.
 
@@ -184,10 +184,8 @@ For the complete, precise specification — every byte, every descriptor field, 
 | [`tools/app_capture_init_sequence.txt`](../tools/app_capture_init_sequence.txt) | The real init byte sequence, straight from the app. |
 | [`tools/test_vendor_protocol.py`](../tools/test_vendor_protocol.py) | pyusb reference that streams real frames (Step 7). |
 | [`tools/vendor_frame.png`](../tools/vendor_frame.png) | A real captured frame. |
-| [`archive/iap2-research/`](../archive/iap2-research/) | The preserved iAP2 dead end — including the Java-level Frida hook that caught nothing. |
-| [`archive/captures/`](../archive/captures/) | All 17 replug captures from the iAP2 investigation. |
 
-The `archive/` material is kept on purpose. It's the evidence behind this story, and it's a reminder of how much effort went into the *wrong* answers before the right one showed up.
+The raw captures and scripts from the iAP2 dead end are **not** published in this repo — they included the device's own Apple MFi authentication certificate, which has no place in a public project. This write-up is the record of those dead ends, and of how much effort went into the *wrong* answers before the right one showed up.
 
 ---
 
